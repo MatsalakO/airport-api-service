@@ -32,6 +32,10 @@ class Crew(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 class Route(models.Model):
     source = models.ForeignKey(
@@ -47,8 +51,7 @@ class Route(models.Model):
     distance = models.IntegerField()
 
     def __str__(self):
-        return (f"Distance between {self.source} and "
-                f"{self.destination} equal {self.distance}")
+        return f"{self.source} -> {self.destination}"
 
 
 class Airplane(models.Model):
@@ -65,6 +68,10 @@ class Airplane(models.Model):
         return (f"{self.name} is {self.airplane_type} type and has"
                 f"{self.rows * self.seats_in_rows} places")
 
+    @property
+    def capacity(self):
+        return f"{self.rows * self.seats_in_rows}"
+
 
 class Flight(models.Model):
     route = models.ForeignKey(Route, on_delete=models.CASCADE, related_name="flight")
@@ -72,6 +79,10 @@ class Flight(models.Model):
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField()
     crew = models.ManyToManyField(Crew, related_name="flight")
+
+    def __str__(self):
+        return (f"Flight from {self.route.source} to {self.route.destination}" 
+                f"estimated time of arrival {self.arrival_time}")
 
 
 class Ticket(models.Model):
