@@ -58,6 +58,23 @@ class RouteViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
+        source = self.request.query_params.get("source")
+        destination = self.request.query_params.get("destination")
+
+        if source:
+            queryset = queryset.filter(
+                source__name__icontains=source
+            )
+        if destination:
+            queryset = queryset.filter(
+                destination__name__icontains=destination
+            )
+        if source and destination:
+            queryset = queryset.filter(
+                source__name__icontains=source,
+                destination__name__icontains=destination
+            )
+
         if self.action in ("list", "retrieve"):
             queryset.select_related("source_id", "destination_id")
 
@@ -75,8 +92,19 @@ class AirplaneViewSet(viewsets.ModelViewSet):
     queryset = Airplane.objects.all()
     serializer_class = AirplaneSerializer
 
+    @staticmethod
+    def _params_to_int(qs):
+        return [int(str_id) for str_id in qs.split(",")]
+
     def get_queryset(self):
         queryset = self.queryset
+        airplane_type = self.request.query_params.get("airplane_type")
+        if airplane_type:
+            airplane_type_ids = self._params_to_int(airplane_type)
+            queryset = queryset.filter(
+                airplane_type__id__in=airplane_type_ids
+            )
+
         if self.action in ("list", "retrieve"):
             queryset.select_related("airplane_type")
 
