@@ -1,3 +1,4 @@
+from django.db.models import F, Count
 from rest_framework import viewsets
 
 from airport.models import (
@@ -129,6 +130,10 @@ class FlightViewSet(viewsets.ModelViewSet):
                 queryset
                 .select_related("airplane", "route")
                 .prefetch_related("crew")
+                .annotate(tickets_available=F(
+                    "airplane__rows") * F(
+                    "airplane__seats_in_rows") - Count(
+                    "tickets"))
             )
 
         return queryset
