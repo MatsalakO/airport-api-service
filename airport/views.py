@@ -1,4 +1,5 @@
 from django.db.models import F, Count
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import action
@@ -28,7 +29,7 @@ from airport.serializers import (
     FlightListSerializer,
     RouteDetailSerializer,
     FlightDetailSerializer,
-    OrderListSerializer, AirplaneImageSerializer,
+    OrderListSerializer, AirplaneImageSerializer, AirplaneListSerializer,
 )
 
 
@@ -131,6 +132,23 @@ class RouteViewSet(viewsets.ModelViewSet):
             return RouteDetailSerializer
         return RouteSerializer
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "source",
+                type={"type": "list", "items": {"type": "string"}},
+                description="Fiter by source name"
+            ),
+            OpenApiParameter(
+                "destination",
+                type={"type": "list", "items": {"type": "string"}},
+                description="Fiter by destination name"
+            ),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
 
 class AirplaneViewSet(viewsets.ModelViewSet):
     queryset = Airplane.objects.all()
@@ -157,6 +175,8 @@ class AirplaneViewSet(viewsets.ModelViewSet):
         return queryset
 
     def get_serializer_class(self):
+        if self.action in ("list", "retrieve"):
+            return AirplaneListSerializer
         if self.action == "upload_image":
             return AirplaneImageSerializer
         return AirplaneSerializer
@@ -170,6 +190,18 @@ class AirplaneViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "airplane_type",
+                type={"type": "list", "items": {"type": "number"}},
+                description="Fiter by airplane type id`s"
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class FlightViewSet(viewsets.ModelViewSet):
