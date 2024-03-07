@@ -55,7 +55,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = self.queryset.filter(user=self.request.user)
 
-        if self.action == "list":
+        if self.action in ("list", "retrieve"):
             queryset = (
                 queryset
                 .prefetch_related(
@@ -117,7 +117,7 @@ class RouteViewSet(viewsets.ModelViewSet):
             )
 
         if self.action in ("list", "retrieve"):
-            queryset.select_related("source_id", "destination_id")
+            queryset.select_related("source", "destination")
 
         return queryset
 
@@ -165,7 +165,7 @@ class AirplaneViewSet(viewsets.ModelViewSet):
             )
 
         if self.action in ("list", "retrieve"):
-            queryset.select_related("airplane_type")
+            queryset.prefetch_related("airplane_type__name")
 
         return queryset
 
@@ -209,7 +209,7 @@ class FlightViewSet(viewsets.ModelViewSet):
         if self.action in ("list", "retrieve"):
             queryset = (
                 queryset
-                .select_related("airplane", "route")
+                .select_related("airplane__airplane_type", "route__source", "route__destination")
                 .prefetch_related("crew")
                 .annotate(tickets_available=F(
                     "airplane__rows") * F(
