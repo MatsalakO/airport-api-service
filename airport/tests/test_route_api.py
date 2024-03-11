@@ -16,8 +16,12 @@ ROUTE_URL = reverse("airport:route-list")
 
 
 def sample_route(**params):
-    source = Airport.objects.create(name="Lviv Airport", closest_big_city="Lviv")
-    destination = Airport.objects.create(name="Kyiv Airport", closest_big_city="Kyiv")
+    source = Airport.objects.create(
+        name="Lviv Airport", closest_big_city="Lviv"
+    )
+    destination = Airport.objects.create(
+        name="Kyiv Airport", closest_big_city="Kyiv"
+    )
     defaults = {
         "source": source,
         "destination": destination,
@@ -40,16 +44,23 @@ class UnauthenticatedRouteApiTests(TestCase):
 class AuthenticatedRouteApiTests(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create_user("test@test.com", "test")
+        self.user = get_user_model().objects.create_user(
+            "test@test.com", "test"
+        )
         self.client.force_authenticate(self.user)
 
     def test_list_airplanes(self):
         route1 = sample_route()
-        route2 = sample_route(source=Airport.objects.create(name="Dolyna", closest_big_city="Dolyna"))
+        route2 = sample_route(
+            source=Airport.objects.create(
+                name="Dolyna", closest_big_city="Dolyna"
+            )
+        )
 
         res = self.client.get(ROUTE_URL)
 
         airplanes = Route.objects.all()
+        print(airplanes)
         serializer = RouteListSerializer(airplanes, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -58,7 +69,9 @@ class AuthenticatedRouteApiTests(TestCase):
     def test_filter_routes_by_source(self):
         route1 = sample_route()
 
-        source2 = Airport.objects.create(name="Dolyna", closest_big_city="Dolyna")
+        source2 = Airport.objects.create(
+            name="Dolyna", closest_big_city="Dolyna"
+        )
         route2 = sample_route(source=source2)
 
         res = self.client.get(ROUTE_URL, {"source": f"{source2.name}"})
@@ -72,7 +85,9 @@ class AuthenticatedRouteApiTests(TestCase):
     def test_filter_routes_by_destination(self):
         route1 = sample_route()
 
-        destination2 = Airport.objects.create(name="Dolyna", closest_big_city="Dolyna")
+        destination2 = Airport.objects.create(
+            name="Dolyna", closest_big_city="Dolyna"
+        )
         route2 = sample_route(source=destination2)
 
         res = self.client.get(ROUTE_URL, {"source": f"{destination2.name}"})
@@ -84,8 +99,12 @@ class AuthenticatedRouteApiTests(TestCase):
         self.assertNotIn(serializer1.data, res.data)
 
     def test_route_creation_forbidden(self):
-        source = Airport.objects.create(name="Lviv Airport", closest_big_city="Lviv")
-        destination = Airport.objects.create(name="Kyiv Airport", closest_big_city="Kyiv")
+        source = Airport.objects.create(
+            name="Lviv Airport", closest_big_city="Lviv"
+        )
+        destination = Airport.objects.create(
+            name="Kyiv Airport", closest_big_city="Kyiv"
+        )
         response = self.client.post(
             ROUTE_URL,
             {
@@ -117,8 +136,12 @@ class AdminRouteApiTests(TestCase):
         self.client.force_authenticate(self.user)
 
     def test_route_creation(self):
-        source = Airport.objects.create(name="Dnipro Airport", closest_big_city="Dnipro")
-        destination = Airport.objects.create(name="Dolyna", closest_big_city="Dolyna")
+        source = Airport.objects.create(
+            name="Dnipro Airport", closest_big_city="Dnipro"
+        )
+        destination = Airport.objects.create(
+            name="Dolyna", closest_big_city="Dolyna"
+        )
         response = self.client.post(
             ROUTE_URL,
             {

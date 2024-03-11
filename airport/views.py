@@ -176,7 +176,8 @@ class AirplaneViewSet(viewsets.ModelViewSet):
             return AirplaneImageSerializer
         return AirplaneSerializer
 
-    @action(methods=["POST"], detail=True, url_path="upload-image", permission_classes=(IsAdminUser,))
+    @action(methods=["POST"], detail=True,
+            url_path="upload-image", permission_classes=(IsAdminUser,))
     def upload_image(self, request, pk=None):
         airplane = self.get_object()
         serializer = self.get_serializer(airplane, data=request.data)
@@ -209,7 +210,11 @@ class FlightViewSet(viewsets.ModelViewSet):
         if self.action in ("list", "retrieve"):
             queryset = (
                 queryset
-                .select_related("airplane__airplane_type", "route__source", "route__destination")
+                .select_related(
+                    "airplane__airplane_type",
+                    "route__source",
+                    "route__destination"
+                )
                 .prefetch_related("crew")
                 .annotate(tickets_available=F(
                     "airplane__rows") * F(
