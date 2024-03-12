@@ -10,6 +10,7 @@ An airline management system built using Django REST Framework, Docker, and Post
 - [Getting Started](#getting-started)
   - [Docker Setup](#installation)
   - [Environment Variables](#environment-variables)
+- [Database schema](#database-schema)
 
 
 ## Introduction
@@ -181,6 +182,7 @@ An airline management system built using Django REST Framework, Docker, and Post
 
 ## Environment Variables
 
+
 Ensure the following environment variables are set in your `.env` file:
 
 ```env
@@ -193,3 +195,7 @@ POSTGRES_NAME=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 Replace placeholders with your actual settings.
+```
+
+## Database schema
+![img.png](img.png)
