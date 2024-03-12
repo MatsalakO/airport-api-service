@@ -7,3 +7,4 @@ db.sqlite3
 airport/migrations
 media/
 setup.cfg
+.env
