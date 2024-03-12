@@ -76,7 +76,11 @@ class Airplane(models.Model):
         on_delete=models.CASCADE,
         related_name="airplane"
     )
-    image = models.ImageField(null=True, upload_to=airplane_image_file_path)
+    image = models.ImageField(
+        null=True,
+        upload_to=airplane_image_file_path,
+        blank=True
+    )
 
     def __str__(self):
         return (f"{self.name} is {self.airplane_type} type and has"
