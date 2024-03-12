@@ -11,6 +11,26 @@ from airport.models import (
     Ticket
 )
 
+
+class TicketInline(admin.TabularInline):
+    model = Ticket
+    extra = 1
+
+
+class OrderAdmin(admin.ModelAdmin):
+    inlines = [TicketInline]
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        for i in range(1, 6):
+            Ticket.objects.create(
+                seat=i,
+                row=1,
+                flight=obj.flights.first(),
+                order=obj
+            )
+
+
 admin.site.register(Route)
 admin.site.register(Airport)
 admin.site.register(Order)
