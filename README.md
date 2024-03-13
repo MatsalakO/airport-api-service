@@ -11,6 +11,30 @@ An airline management system built using Django REST Framework, Docker, and Post
   - [Docker Setup](#installation)
   - [Environment Variables](#environment-variables)
 - [Database schema](#database-schema)
+- [Endpoints](#endpoints)
+  - [Main page](#main_page)
+  - [Airplanes api](#airplanes_api)
+    - [Airplanes list](#airplanes_list)
+    - [Airplanes detail](#airplanes_detail)
+  -  [Airplane type api](#airplane_type_api)
+    - [Airplane type list](#airplane_type_list)
+    - [Airplane type detail](#airplane_type_detail)
+  -  [Airport api](#airports_api)
+    - [Airport list](#airports_list)
+    - [Airport detail](#airports_detail)
+  - [Crew api](#crew_api)
+    - [Crew list](#crew_list)
+    - [Crew detail](#crew_detail)
+  - [Flights api](#flights_api)
+    - [Flights list](#flights_list)
+    - [Flights detail](#flights_detail)
+  - [Orders api](#orders_api)
+    - [Orders list](#orders_list)
+    - [Orders detail](#orders_detail)
+  - [Routes api](#routes_api)
+    - [Routes list](#routes_list)
+    - [Routes detail](#routes_detail)
+  - [Users api](#users_api)
 
 
 ## Introduction
@@ -198,4 +222,76 @@ Replace placeholders with your actual settings.
 ```
 
 ## Database schema
-![img.png](img.png)
+![database_schema.png](images/database_schema.png)
+
+## Endpoints
+
+## Main_page
+![main_page.png](images/main_page.png)
+
+
+## Airplanes_api
+
+## Airplanes_list
+![airplanes_list.png](images/airplanes_list.png)
+
+## Airplanes_detail
+![images/airplanes_detail.png](images/airplanes_detail.png)
+
+
+## Airplane_type_api
+
+## Airplane_type_list
+![images/airplane_types_list.png](images/airplane_types_list.png)
+
+## Airplane_type_detail
+![images/airplane_types_detail.png](images/airplane_types_detail.png)
+
+
+## Airports_api
+
+## Airports_list
+![images/airport_list.png](images/airport_list.png)
+
+## Airports_detail
+![images/airports_detail.png](images/airports_detail.png)
+
+
+## Crew_api
+
+## Crew_list
+![images/crew_list.png](images/crew_list.png)
+
+## Crew_detail
+![images/crew_detail.png](images/crew_detail.png)
+
+
+## Flights_api
+
+## Flights_list
+![images/flight_list.png](images/flight_list.png)
+
+## Flights_detail
+![images/flight_detail.png](images/flight_detail.png)
+
+
+## Orders_api
+
+## Orders_list
+![images/order_list.png](images/order_list.png)
+
+## Orders_detail
+![images/order_detail.png](images/order_detail.png)
+
+
+## Routes_api
+
+## Routes_list
+![images/order_list.png](images/route_list.png)
+
+## Routes_detail
+![images/order_detail.png](images/route_detail.png)
+
+
+## Users_api
+![images/user.png](images/user.png)
